@@ -1,6 +1,9 @@
-import { IsUrl } from 'class-validator';
+import { IsBoolean, IsUrl } from 'class-validator';
 
 export class CrawlDto {
   @IsUrl({ require_tld: false })
   url!: string;
+
+  @IsBoolean()
+  confirmedRights!: boolean;
 }

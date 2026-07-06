@@ -17,9 +17,9 @@ Cập nhật lần cuối: hoàn tất cài đặt skills.
 | | Số lượng |
 |---|----------|
 | ✅ Từ skills.sh | **45** |
-| ⚠️ Gần khớp | **0** (đã ghi chú trong bảng) |
 | ❌ Custom stub | **8** |
 | **Tổng skill files** | **53** |
+| **API integration** | ✅ `SkillLoaderService` injects skills per pipeline stage |
 
 ---
 

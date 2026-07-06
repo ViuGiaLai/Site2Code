@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { chromium } from 'playwright';
+import { Injectable, OnModuleDestroy, Logger } from '@nestjs/common';
+import { chromium, type Browser } from 'playwright';
 import * as cheerio from 'cheerio';
 import * as path from 'path';
 import * as fs from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
+import { validateCrawlHost } from '../common/utils/url.util';
 
 @Injectable()
-export class CrawlerService {
+export class CrawlerService implements OnModuleDestroy {
+  private readonly logger = new Logger(CrawlerService.name);
   private readonly screenshotDir = path.join(process.cwd(), 'screenshots');
+  private browser: Browser | null = null;
+  private browserPromise: Promise<Browser> | null = null;
 
   constructor(private readonly prisma: PrismaService) {
     if (!fs.existsSync(this.screenshotDir)) {
@@ -15,8 +19,31 @@ export class CrawlerService {
     }
   }
 
+  async onModuleDestroy() {
+    if (this.browser) {
+      await this.browser.close().catch(() => undefined);
+      this.browser = null;
+      this.browserPromise = null;
+    }
+  }
+
+  private getBrowser(): Promise<Browser> {
+    if (this.browser) return Promise.resolve(this.browser);
+    if (!this.browserPromise) {
+      this.browserPromise = chromium.launch({ headless: true }).then((b) => {
+        this.browser = b;
+        return b;
+      });
+    }
+    return this.browserPromise;
+  }
+
   async crawl(url: string) {
-    const browser = await chromium.launch({ headless: true });
+    const timeout = Number(process.env.CRAWL_TIMEOUT_MS || 25_000);
+    const settleMs = Number(process.env.CRAWL_SETTLE_MS || 800);
+    const captureScreenshot = process.env.CRAWL_SCREENSHOT !== 'false';
+
+    const browser = await this.getBrowser();
     const context = await browser.newContext({
       userAgent:
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -24,14 +51,18 @@ export class CrawlerService {
     const page = await context.newPage();
 
     try {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout });
+      if (settleMs > 0) await page.waitForTimeout(settleMs);
 
-      const sanitizedUrl = url.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 50);
-      const timestamp = Date.now();
-      const screenshotFilename = `${sanitizedUrl}_${timestamp}.png`;
-      const screenshotPath = path.join(this.screenshotDir, screenshotFilename);
+      validateCrawlHost(page.url());
 
-      await page.screenshot({ path: screenshotPath, fullPage: true });
+      let screenshotPath: string | null = null;
+      if (captureScreenshot) {
+        const sanitizedUrl = url.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 50);
+        const screenshotFilename = `${sanitizedUrl}_${Date.now()}.png`;
+        screenshotPath = path.join(this.screenshotDir, screenshotFilename);
+        await page.screenshot({ path: screenshotPath, fullPage: false });
+      }
 
       const rawHtml = await page.content();
       const title = await page.title();
@@ -47,7 +78,7 @@ export class CrawlerService {
 
       return { ...crawl };
     } finally {
-      await browser.close();
+      await context.close();
     }
   }
 

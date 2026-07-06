@@ -2,73 +2,60 @@
 
 **URL → Code**: Phân tích website và sinh project theo stack công nghệ bạn chọn.
 
-## Cấu trúc dự án
-
-```
-SITE2CODE/
-├── apps/
-│   ├── api/                 # NestJS backend
-│   └── web/                 # Next.js frontend
-├── ai/
-│   ├── prompts/             # Prompt templates cho AI pipeline
-│   ├── skills/              # Domain skills (từ skills.sh + custom)
-│   └── templates/           # Starter scaffolds theo stack
-├── docs/
-│   ├── architecture.md
-│   ├── roadmap.md
-│   └── api.md
-└── scripts/
-    ├── skills-manifest.json # Mapping skill → skills.sh source
-    └── install-skills.ps1   # Tải skills từ skills.sh
-```
-
-## AI Pipeline
-
-```
-URL → Playwright → Cheerio → HTML/CSS/JS analysis
-  → Software Architecture
-  → [Frontend: React | Vue | Angular | ...]
-  → [Backend: NestJS | Spring | FastAPI | ...]
-  → [Database: PostgreSQL | MySQL | ...]
-  → Code Review → Performance → Security
-  → Export ZIP
-```
-
 ## Quick Start
 
-### API (NestJS)
+### 1. Cấu hình `.env` (root)
+
+Copy `.env.example` → `.env` và điền:
+- `DATABASE_URL` — Supabase PostgreSQL
+- `GEMINI_API_KEY` và/hoặc `OPENROUTER_API_KEY`, `CLAUDE_API_KEY`
+
+### 2. API (port **3001**)
 
 ```bash
 cd apps/api
 npm install
+npx prisma migrate deploy
 npm run start:dev
 ```
 
-### Web (Next.js)
+### 3. Web (port **3000**)
 
 ```bash
 cd apps/web
+cp .env.local.example .env.local
 npm install
 npm run dev
 ```
 
-### Cài skills từ skills.sh
+Mở http://localhost:3000 — API tại http://localhost:3001
 
-```bash
-.\scripts\install-skills.ps1
+## AI Pipeline
+
+```
+POST /api/crawl → crawl → analyze → generate → review → optimize → security → ZIP
 ```
 
-## Skills
+Mỗi bước dùng provider riêng (Gemini, Claude, OpenRouter, ...) — xem `ai/skills/ai-codegen/llm.md`.
 
-Khoảng **50 skills** phục vụ pipeline phân tích → sinh code. Xem `ai/skills/SKILLS-STATUS.md` để biết skill nào đã tải, skill nào cần viết custom.
+## Cấu trúc
+
+```
+SITE2CODE/
+├── apps/api/          # NestJS backend
+├── apps/web/          # Next.js frontend
+├── ai/prompts/        # 5 prompt templates
+├── ai/skills/         # ~59 domain skills
+└── docs/              # architecture, api, roadmap
+```
 
 ## Tài liệu
 
 - [Architecture](docs/architecture.md)
-- [Roadmap](docs/roadmap.md)
 - [API](docs/api.md)
-- [Kế hoạch chi tiết](Site2codeplan.MD)
+- [Roadmap](docs/roadmap.md)
+- [Skills status](ai/skills/SKILLS-STATUS.md)
 
 ## Lưu ý pháp lý
 
-Tool chỉ dùng cho website bạn **có quyền** tái tạo. Không copy nguyên văn nội dung, hình ảnh, hoặc thương hiệu gốc.
+Chỉ dùng với website bạn **có quyền** tái tạo. Checkbox `confirmedRights` bắt buộc trước khi crawl.

@@ -16,7 +16,7 @@
 - **Geist Font** (từ next/font)
 
 ### Backend API
-- Base URL: `http://localhost:3001/api` (dev)
+- Base URL: `http://localhost:3000/api` (dev)
 - Proxy rewrite: `/api/:path*` → `http://localhost:3000/api/:path*`
 
 ---

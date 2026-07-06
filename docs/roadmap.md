@@ -1,46 +1,30 @@
 # Site2Code Roadmap
 
-## Phase 1 — MVP (Weeks 1–3)
+## Phase 1 — MVP
 
 - [x] Monorepo structure (`apps/api`, `apps/web`, `ai/`, `docs/`)
-- [x] NestJS API scaffold
-- [x] AI prompts + skills catalog
-- [ ] Next.js web UI (URL input, stack picker, progress)
-- [ ] Playwright crawler module
-- [ ] Cheerio DOM simplifier
-- [ ] Layout analyzer (AI → JSON)
-- [ ] Code generator (Next.js + Tailwind only)
-- [ ] ZIP export
-
-**MVP scope**: static landing pages only, single output stack (Next.js + Tailwind).
-
-## Phase 2 — Multi-Stack (Weeks 4–6)
-
-- [ ] Stack picker: React, Vue, Angular, Svelte
-- [ ] Backend options: NestJS, Express, FastAPI
-- [ ] Database options: PostgreSQL, MySQL, MongoDB
-- [ ] User review step for layout JSON before code generation
-- [ ] Code review + auto-fix pipeline
-
-## Phase 3 — Quality (Weeks 7–9)
-
-- [ ] Performance optimization pass
-- [ ] Security audit pass
-- [ ] Accessibility scoring
+- [x] NestJS API + Supabase PostgreSQL
+- [x] AI prompts + skills catalog + per-stage provider routing
+- [x] Next.js web UI (URL, stack, progress, download)
+- [x] Playwright crawler + Cheerio DOM cleaner
+- [x] Layout analyzer → code generator → review → optimize → security
+- [x] ZIP export
 - [ ] Preview generated site before download
-- [ ] Project history (PostgreSQL)
+- [ ] `ai/templates/` scaffolds per stack
 
-## Phase 4 — Production (Weeks 10–12)
+## Phase 2 — Multi-Stack polish
 
-- [ ] Authentication (optional accounts)
-- [ ] Rate limiting + queue (Bull/BullMQ)
-- [ ] Billing / usage limits
-- [ ] Deploy to Vercel + Railway
-- [ ] Public beta launch
+- [ ] User review step for layout JSON before code generation
+- [ ] More backend options in UI (django, laravel, go)
+- [ ] ORM picker (prisma, typeorm, drizzle)
 
-## Out of Scope (for now)
+## Phase 3 — Quality
 
-- Kubernetes, advanced DevOps
-- Blockchain, ML, data science skills
-- Full ecommerce / auth / payment cloning
-- Local LLM (use API first)
+- [ ] Multimodal analyze (screenshot vision)
+- [ ] Accessibility scoring in UI
+- [ ] Rate limiting + job queue
+
+## Phase 4 — Production
+
+- [ ] Deploy Vercel + Railway
+- [ ] Authentication + usage limits

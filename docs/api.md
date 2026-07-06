@@ -2,17 +2,21 @@
 
 Base URL: `http://localhost:3001/api` (development)
 
-## Endpoints (planned)
+## Endpoints
 
-### POST `/crawl`
+### POST `/api/crawl`
 
-Crawl a URL and return simplified DOM + screenshot.
+Start full pipeline (crawl → analyze → generate → review → optimize → security → ZIP).
 
 **Request:**
 ```json
 {
   "url": "https://example.com",
-  "confirmedRights": true
+  "confirmedRights": true,
+  "frontend": "nextjs",
+  "css": "tailwind",
+  "backend": "nestjs",
+  "database": "postgresql"
 }
 ```
 
@@ -20,58 +24,11 @@ Crawl a URL and return simplified DOM + screenshot.
 ```json
 {
   "jobId": "uuid",
-  "status": "completed",
-  "html": "...",
-  "screenshot": "base64...",
-  "domSummary": { "sections": 5, "links": 12 }
+  "status": "crawling"
 }
 ```
 
-### POST `/analyze`
-
-Analyze crawled content into layout JSON.
-
-**Request:**
-```json
-{
-  "jobId": "uuid"
-}
-```
-
-**Response:**
-```json
-{
-  "layout": { "pageType": "landing", "sections": [...] }
-}
-```
-
-### POST `/generate`
-
-Generate project code from layout + stack selection.
-
-**Request:**
-```json
-{
-  "jobId": "uuid",
-  "stack": {
-    "frontend": "nextjs",
-    "css": "tailwind",
-    "backend": "nestjs",
-    "database": "postgresql"
-  }
-}
-```
-
-**Response:**
-```json
-{
-  "jobId": "uuid",
-  "status": "generating",
-  "files": []
-}
-```
-
-### GET `/jobs/:id`
+### GET `/api/jobs/:id`
 
 Poll job status.
 
@@ -79,31 +36,44 @@ Poll job status.
 ```json
 {
   "id": "uuid",
-  "status": "completed | processing | failed",
-  "progress": 75,
-  "downloadUrl": "/export/uuid.zip"
+  "status": "analyzing",
+  "progress": 25,
+  "error": null,
+  "downloadUrl": null
 }
 ```
 
-### GET `/export/:id`
+**Status values:** `crawling` → `analyzing` → `generating` → `reviewing` → `optimizing` → `security` → `packaging` → `completed` | `failed`
+
+When `status === "completed"`, `downloadUrl` is `/api/export/{id}`.
+
+### GET `/api/export/:id`
 
 Download generated project as ZIP.
 
-## Error Codes
+### POST `/crawler/crawl` (dev only)
 
-| Code | Meaning |
-|------|---------|
-| 400 | Invalid URL or missing confirmation |
-| 403 | Blocked domain (SSRF protection) |
-| 404 | Job not found |
-| 429 | Rate limit exceeded |
-| 500 | Internal / AI failure |
+Crawl-only endpoint. Requires `confirmedRights`. Same URL validation as pipeline.
+
+---
 
 ## Environment Variables
 
-```env
-DATABASE_URL=postgresql://...
-OPENROUTER_API_KEY=...
-CRAWL_TIMEOUT_MS=30000
-BLOCKED_DOMAINS=localhost,127.0.0.1
-```
+Config lives in **root `.env`** (loaded first), then `apps/api/.env` overrides.
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | Supabase PostgreSQL connection string |
+| `GEMINI_API_KEY` | One of* | Google Gemini |
+| `OPENROUTER_API_KEY` | One of* | OpenRouter fallback |
+| `CLAUDE_API_KEY` | Optional | Code generation (recommended) |
+| `PORT` | No | API port (default `3001`) |
+| `CRAWL_TIMEOUT_MS` | No | Crawl timeout (default `30000`) |
+| `AI_ANALYZE_PROVIDER` | No | Override stage provider |
+| `AI_GENERATE_PROVIDER` | No | Override stage provider |
+| `AI_MAX_RETRIES` | No | Retries per provider (default `2`) |
+| `BLOCKED_DOMAINS` | No | Comma-separated blocked domains |
+
+\*At least one AI provider API key required.
+
+See root `.env.example` for full provider list.

@@ -2,7 +2,7 @@
 
 import { FormEvent, useState, useEffect, useCallback } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const FRONTENDS = ['nextjs', 'react', 'vue', 'angular', 'svelte'] as const;
 const CSS_OPTIONS = ['tailwind', 'bootstrap', 'material-ui', 'chakra', 'none'] as const;
@@ -71,6 +71,7 @@ export default function Home() {
   const [css, setCss] = useState('tailwind');
   const [backend, setBackend] = useState('none');
   const [database, setDatabase] = useState('none');
+  const [confirmedRights, setConfirmedRights] = useState(false);
   const [loading, setLoading] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
   const [job, setJob] = useState<{
@@ -81,12 +82,20 @@ export default function Home() {
   } | null>(null);
 
   const pollJob = useCallback(async (id: string) => {
-    const res = await fetch(`${API}/api/jobs/${id}`);
-    if (!res.ok) return;
-    const data = await res.json();
-    setJob(data);
-    if (!['completed', 'failed'].includes(data.status)) {
-      setTimeout(() => pollJob(id), 2000);
+    try {
+      const res = await fetch(`${API}/api/jobs/${id}`);
+      if (!res.ok) {
+        setJob({ status: 'failed', progress: 0, error: `Poll failed (${res.status})` });
+        return;
+      }
+      const data = await res.json();
+      setJob(data);
+      if (!['completed', 'failed'].includes(data.status)) {
+        const delay = ['generating', 'optimizing', 'reviewing'].includes(data.status) ? 3000 : 1500;
+        setTimeout(() => pollJob(id), delay);
+      }
+    } catch {
+      setJob({ status: 'failed', progress: 0, error: 'Lost connection to API' });
     }
   }, []);
 
@@ -96,7 +105,7 @@ export default function Home() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!url) return;
+    if (!url || !confirmedRights) return;
     setLoading(true);
     setJob(null);
     try {
@@ -105,6 +114,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           url,
+          confirmedRights,
           frontend,
           css,
           backend: backend === 'none' ? undefined : backend,
@@ -112,6 +122,14 @@ export default function Home() {
         }),
       });
       const data = await res.json();
+      if (!res.ok) {
+        setJob({
+          status: 'failed',
+          progress: 0,
+          error: data.message || data.error || `Request failed (${res.status})`,
+        });
+        return;
+      }
       setJobId(data.jobId);
     } catch {
       setJob({ status: 'failed', progress: 0, error: 'Failed to start job' });
@@ -197,9 +215,22 @@ export default function Home() {
             </div>
           </div>
 
+          <label className="flex items-start gap-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={confirmedRights}
+              onChange={(e) => setConfirmedRights(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-[#2A5279] bg-[#0F3355] accent-[#4FD8E0]"
+            />
+            <span className="text-xs font-mono text-[#7FA0BF] leading-relaxed group-hover:text-[#A8C4DC] transition-colors">
+              I confirm I have the right to analyze and rebuild this website&apos;s layout
+              (not for copying copyrighted content or branding).
+            </span>
+          </label>
+
           <button
             type="submit"
-            disabled={loading || !url}
+            disabled={loading || !url || !confirmedRights}
             className="w-full py-3.5 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-[#0B2942] bg-[#E8A33D] hover:bg-[#F0B65C] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             style={{ clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%)' }}
           >

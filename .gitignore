@@ -44,6 +44,12 @@ Desktop.ini
 .agents/
 .codex/
 
+# Prisma SQLite (local dev)
+apps/api/prisma/dev.db
+apps/api/prisma/dev.db-journal
+apps/api/exports/
+apps/api/screenshots/
+
 # Temporary files
 .cache/
 .tmp/

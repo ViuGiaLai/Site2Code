@@ -28,7 +28,7 @@ SITE2CODE/
 ├── ai/
 │   ├── prompts/      # AI prompt templates
 │   ├── skills/       # Domain knowledge (from skills.sh + custom)
-│   └── templates/    # Starter project scaffolds per stack
+│   └── templates/    # Planned starter scaffolds (see ai/templates/README.md)
 └── docs/
 ```
 
@@ -61,7 +61,7 @@ URL → playwright → cheerio → html/css/javascript
 | Frontend | Next.js 14+ App Router + Tailwind |
 | Backend | NestJS + TypeScript |
 | Crawler | Playwright + Cheerio |
-| Database | PostgreSQL + Prisma |
+| Database | Supabase PostgreSQL (Session Pooler) + Prisma |
 | AI | OpenRouter / Gemini API |
 | Export | adm-zip |
 

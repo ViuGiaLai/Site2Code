@@ -1,20 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { AiService } from '../ai/ai.service';
+import { extractJsonObject } from '../common/utils/json.util';
+import { compressHtmlForAnalysis } from '../common/utils/ai-payload.util';
 
 @Injectable()
 export class AnalyzerService {
   constructor(private readonly ai: AiService) {}
 
-  async analyze(html: string, screenshotB64?: string) {
-    const input = `RENDERED_HTML:\n${html.slice(0, 100000)}${screenshotB64 ? `\nSCREENSHOT_B64: ${screenshotB64.slice(0, 5000)}` : ''}`;
-    const raw = await this.ai.generateFromPrompt('analyze-layout', input);
-    const json = this.extractJson(raw);
-    return json;
-  }
+  async analyze(
+    url: string,
+    html: string,
+    stack: { frontend: string; css: string; backend?: string; database?: string },
+    meta?: { title?: string | null; metaDescription?: string | null },
+  ) {
+    const input = [
+      `SOURCE_URL: ${url}`,
+      meta?.title ? `PAGE_TITLE: ${meta.title}` : '',
+      meta?.metaDescription ? `META_DESCRIPTION: ${meta.metaDescription}` : '',
+      `RENDERED_HTML:\n${compressHtmlForAnalysis(html)}`,
+    ]
+      .filter(Boolean)
+      .join('\n\n');
 
-  private extractJson(text: string): Record<string, unknown> {
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('No JSON found in AI response');
-    return JSON.parse(match[0]);
+    const raw = await this.ai.generateFromPrompt('analyze-layout', input, {
+      stage: 'analyze',
+      stack,
+    });
+    return extractJsonObject(raw);
   }
 }

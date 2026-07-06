@@ -19,10 +19,16 @@ Apply performance optimizations without changing visual layout or functionality.
 6. **API**: response caching, pagination
 
 ## Output
-Return the same JSON file array format as generate-code, with optimized contents.
+Return a JSON **array of files** (same format as generate-code), or an object `{ "files": [...], "optimizations": ["..."] }`.
+
+```json
+[
+  { "path": "src/app/page.tsx", "content": "...", "language": "typescript" }
+]
+```
 
 ## Rules
 1. Do not change component structure or visual design.
-2. Document each optimization in a `optimizations` array at the top of the response.
+2. Optional: include an `optimizations` array describing changes (when using object wrapper).
 3. Prefer framework-native optimizations over custom solutions.
 4. Skip premature optimization — only fix real issues from the review report.
