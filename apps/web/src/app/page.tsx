@@ -9,6 +9,62 @@ const CSS_OPTIONS = ['tailwind', 'bootstrap', 'material-ui', 'chakra', 'none'] a
 const BACKENDS = ['none', 'nestjs', 'express', 'fastapi', 'springboot'] as const;
 const DATABASES = ['none', 'postgresql', 'mysql', 'mongodb', 'sqlite'] as const;
 
+const STAGES = [
+  { key: 'crawling', label: 'Crawl' },
+  { key: 'analyzing', label: 'Analyze' },
+  { key: 'generating', label: 'Generate' },
+  { key: 'reviewing', label: 'Review' },
+  { key: 'optimizing', label: 'Optimize' },
+  { key: 'security', label: 'Secure' },
+  { key: 'packaging', label: 'Package' },
+] as const;
+
+function Field({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  options: readonly string[];
+}) {
+  return (
+    <label className="block">
+      <span className="block text-[11px] font-mono uppercase tracking-[0.14em] text-[#7FA0BF] mb-2">
+        {label}
+      </span>
+      <div className="relative">
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full appearance-none rounded-sm border border-[#2A5279] bg-[#0F3355] px-3 py-2.5 text-sm text-[#E7EEF5] font-mono focus:outline-none focus:ring-1 focus:ring-[#4FD8E0] focus:border-[#4FD8E0] transition-colors"
+        >
+          {options.map((o) => (
+            <option key={o} value={o} className="bg-[#0F3355]">
+              {o}
+            </option>
+          ))}
+        </select>
+        <svg
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#4FD8E0]"
+          viewBox="0 0 12 12"
+          fill="none"
+        >
+          <path
+            d="M2.5 4.5L6 8L9.5 4.5"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </label>
+  );
+}
+
 export default function Home() {
   const [url, setUrl] = useState('');
   const [frontend, setFrontend] = useState('nextjs');
@@ -47,7 +103,13 @@ export default function Home() {
       const res = await fetch(`${API}/api/crawl`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, frontend, css, backend: backend === 'none' ? undefined : backend, database: database === 'none' ? undefined : database }),
+        body: JSON.stringify({
+          url,
+          frontend,
+          css,
+          backend: backend === 'none' ? undefined : backend,
+          database: database === 'none' ? undefined : database,
+        }),
       });
       const data = await res.json();
       setJobId(data.jobId);
@@ -58,113 +120,162 @@ export default function Home() {
     }
   }
 
-  function statusBadge(status: string) {
-    const colors: Record<string, string> = {
-      crawling: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      analyzing: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-      generating: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-      reviewing: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      optimizing: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-      security: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-      packaging: 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200',
-      completed: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      failed: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-    };
-    return colors[status] || 'bg-gray-100 text-gray-800';
-  }
+  const rawIndex =
+    job?.status === 'completed'
+      ? STAGES.length
+      : STAGES.findIndex((s) => s.key === job?.status);
+  const stageIndex = Math.max(0, rawIndex);
+  const clampedIndex = Math.min(stageIndex, STAGES.length - 1);
+  const progressFraction = clampedIndex / (STAGES.length - 1);
 
   return (
-    <div className="max-w-3xl mx-auto w-full px-4 py-12 sm:py-24">
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl font-bold tracking-tight mb-2">Site2Code</h1>
-        <p className="text-zinc-500 dark:text-zinc-400">
-          Convert any website URL into a downloadable project
-        </p>
-      </header>
+    <div
+      className="min-h-screen w-full bg-[#0B2942] text-[#E7EEF5]"
+      style={{
+        backgroundImage:
+          'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
+        backgroundSize: '28px 28px',
+      }}
+    >
+      <div className="max-w-2xl mx-auto px-5 py-14 sm:py-20">
+        {/* Title block */}
+        <header className="mb-10 border-b border-[#1E4A70] pb-4 flex items-end justify-between">
+          <div>
+            <h1 className="font-mono text-2xl sm:text-3xl font-semibold tracking-tight">
+              SITE2CODE
+            </h1>
+            <p className="mt-1 text-sm text-[#7FA0BF] font-mono">
+              url → stack compiler
+            </p>
+          </div>
+          <span className="hidden sm:block text-[11px] font-mono text-[#4A6E90] tracking-wider">
+            REV A
+          </span>
+        </header>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium mb-1.5">Website URL</label>
-          <input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com"
-            required
-            className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 text-base"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1.5">Frontend</label>
-            <select value={frontend} onChange={(e) => setFrontend(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 text-sm">
-              {FRONTENDS.map((f) => <option key={f} value={f}>{f}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5">CSS</label>
-            <select value={css} onChange={(e) => setCss(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 text-sm">
-              {CSS_OPTIONS.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5">Backend</label>
-            <select value={backend} onChange={(e) => setBackend(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 text-sm">
-              {BACKENDS.map((b) => <option key={b} value={b}>{b}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1.5">Database</label>
-            <select value={database} onChange={(e) => setDatabase(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 text-sm">
-              {DATABASES.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading || !url}
-          className="w-full py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium text-base hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        {/* Input panel */}
+        <form
+          onSubmit={handleSubmit}
+          className="relative border border-[#1E4A70] bg-[#0F3355]/60 p-6 sm:p-8 space-y-8"
         >
-          {loading ? 'Starting...' : 'Generate Project'}
-        </button>
-      </form>
+          <span className="absolute -top-px -left-px h-3 w-3 border-t border-l border-[#4FD8E0]" />
+          <span className="absolute -top-px -right-px h-3 w-3 border-t border-r border-[#4FD8E0]" />
+          <span className="absolute -bottom-px -left-px h-3 w-3 border-b border-l border-[#4FD8E0]" />
+          <span className="absolute -bottom-px -right-px h-3 w-3 border-b border-r border-[#4FD8E0]" />
 
-      {job && (
-        <div className="mt-10 space-y-4">
-          <div className="flex items-center justify-between">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusBadge(job.status)}`}>
-              {job.status}
-            </span>
-            <span className="text-sm text-zinc-500">{job.progress}%</span>
-          </div>
-
-          <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-2.5 overflow-hidden">
-            <div
-              className="h-full bg-zinc-900 dark:bg-zinc-100 rounded-full transition-all duration-700"
-              style={{ width: `${job.progress}%` }}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="font-mono text-xs text-[#4FD8E0]">01</span>
+              <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#7FA0BF]">
+                Source
+              </span>
+              <span className="flex-1 h-px bg-[#1E4A70]" />
+            </div>
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://example.com"
+              required
+              className="w-full rounded-sm border border-[#2A5279] bg-[#0F3355] px-4 py-3 text-sm font-mono placeholder:text-[#4A6E90] focus:outline-none focus:ring-1 focus:ring-[#4FD8E0] focus:border-[#4FD8E0] transition-colors"
             />
           </div>
 
-          {job.status === 'completed' && (
-            <div className="text-center pt-4">
-              <a
-                href={`${API}/api/export/${jobId}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
-              >
-                Download ZIP
-              </a>
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="font-mono text-xs text-[#4FD8E0]">02</span>
+              <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#7FA0BF]">
+                Stack
+              </span>
+              <span className="flex-1 h-px bg-[#1E4A70]" />
             </div>
-          )}
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Frontend" value={frontend} onChange={setFrontend} options={FRONTENDS} />
+              <Field label="Styling" value={css} onChange={setCss} options={CSS_OPTIONS} />
+              <Field label="Backend" value={backend} onChange={setBackend} options={BACKENDS} />
+              <Field label="Database" value={database} onChange={setDatabase} options={DATABASES} />
+            </div>
+          </div>
 
-          {job.status === 'failed' && (
-            <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm">
-              {job.error || 'Something went wrong'}
+          <button
+            type="submit"
+            disabled={loading || !url}
+            className="w-full py-3.5 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-[#0B2942] bg-[#E8A33D] hover:bg-[#F0B65C] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            style={{ clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%)' }}
+          >
+            {loading ? 'Starting…' : '▶ Compile project'}
+          </button>
+        </form>
+
+        {/* Pipeline */}
+        {job && (
+          <div className="mt-10 border border-[#1E4A70] bg-[#0F3355]/40 p-6 sm:p-8">
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#7FA0BF]">
+                Build pipeline
+              </span>
+              <span className="font-mono text-sm text-[#4FD8E0]">{job.progress}%</span>
             </div>
-          )}
-        </div>
-      )}
+
+            {job.status !== 'failed' ? (
+              <div className="relative">
+                <div className="absolute top-3 left-3 right-3 h-px bg-[#1E4A70]" />
+                <div
+                  className="absolute top-3 left-3 h-px bg-[#4FD8E0] transition-all duration-700"
+                  style={{ width: `calc(${progressFraction} * (100% - 24px))` }}
+                />
+                <div className="relative flex justify-between">
+                  {STAGES.map((stage, i) => {
+                    const done = i < stageIndex;
+                    const active = i === stageIndex && job.status !== 'completed';
+                    return (
+                      <div key={stage.key} className="flex flex-col items-center gap-2 w-0 flex-1">
+                        <div
+                          className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-mono border transition-colors ${
+                            done
+                              ? 'bg-[#4FD8E0] border-[#4FD8E0] text-[#0B2942]'
+                              : active
+                              ? 'border-[#4FD8E0] text-[#4FD8E0] motion-safe:animate-pulse'
+                              : 'border-[#2A5279] text-[#4A6E90]'
+                          }`}
+                        >
+                          {done ? '✓' : i + 1}
+                        </div>
+                        <span
+                          className={`text-[10px] font-mono uppercase tracking-wide text-center ${
+                            done || active ? 'text-[#E7EEF5]' : 'text-[#4A6E90]'
+                          }`}
+                        >
+                          {stage.label}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="border border-[#5A2A2E] bg-[#3A1518]/60 px-4 py-3 text-sm font-mono text-[#F2A6A0]">
+                ⚠ {job.error || 'Build failed'}
+              </div>
+            )}
+
+            {job.status === 'completed' && (
+              <div className="mt-8 flex items-center justify-center gap-4 flex-wrap">
+                <a
+                  href={`${API}/api/export/${jobId}`}
+                  className="inline-flex items-center gap-2 px-6 py-3 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-[#0B2942] bg-[#E8A33D] hover:bg-[#F0B65C] transition-colors"
+                  style={{ clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%)' }}
+                >
+                  ⬇ Download zip
+                </a>
+                <span className="rotate-[-4deg] border border-dashed border-[#4FD8E0] text-[#4FD8E0] text-[10px] font-mono uppercase tracking-widest px-2 py-1">
+                  Build approved
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
