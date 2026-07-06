@@ -1,0 +1,74 @@
+{
+  "common": {
+    "typescript-pro.md": "jeffallan/claude-skills@typescript-pro",
+    "typescript-best-practices.md": "wshobson/agents@typescript-advanced-types",
+    "clean-code.md": "sickn33/antigravity-awesome-skills@clean-code",
+    "software-architecture.md": "mattpocock/skills@improve-codebase-architecture",
+    "design-pattern.md": "wshobson/agents@design-system-patterns",
+    "code-review.md": "obra/superpowers@requesting-code-review",
+    "debugging.md": "obra/superpowers@systematic-debugging",
+    "testing.md": "anthropics/skills@webapp-testing"
+  },
+  "frontend": {
+    "react.md": "vercel-labs/agent-skills@vercel-react-best-practices",
+    "nextjs.md": "wshobson/agents@nextjs-app-router-patterns",
+    "vue.md": "antfu/skills@vue",
+    "nuxt.md": "antfu/skills@nuxt",
+    "angular.md": "analogjs/angular-skills@angular-component",
+    "svelte.md": "sveltejs/ai-tools@svelte-code-writer",
+    "tailwind.md": "wshobson/agents@tailwind-design-system",
+    "shadcn.md": "shadcn/ui@shadcn",
+    "chakra.md": "chakra-ui/chakra-ui@chakra-ui-builder",
+    "material-ui.md": "mui/material-ui@material-ui-styling"
+  },
+  "backend": {
+    "nodejs.md": "wshobson/agents@nodejs-backend-patterns",
+    "express.md": "aj-geddes/useful-ai-prompts@nodejs-express-server",
+    "nestjs.md": "kadajett/agent-nestjs-skills@nestjs-best-practices",
+    "springboot.md": "github/awesome-copilot@java-springboot",
+    "aspnet.md": "github/awesome-copilot@aspnet-minimal-api-openapi",
+    "laravel.md": "jeffallan/claude-skills@laravel-specialist",
+    "django.md": "affaan-m/everything-claude-code@django-patterns",
+    "fastapi.md": "wshobson/agents@fastapi-templates",
+    "go.md": "samber/cc-skills-golang@golang-code-style"
+  },
+  "database": {
+    "postgres.md": "wshobson/agents@postgresql-table-design",
+    "mysql.md": "planetscale/database-skills@mysql",
+    "mongodb.md": "mongodb/agent-skills@mongodb-schema-design",
+    "sqlite.md": "prisma/skills@prisma-database-setup",
+    "prisma.md": "prisma/skills@prisma-client-api",
+    "typeorm.md": "mindrally/skills@typeorm",
+    "drizzle.md": "bobmatnyc/claude-mpm-skills@drizzle-orm"
+  },
+  "crawler": {
+    "playwright.md": "currents-dev/playwright-best-practices-skill@playwright-best-practices",
+    "cheerio.md": "mindrally/skills@cheerio-parsing",
+    "web-scraping.md": "jamditis/claude-skills-journalism@web-scraping"
+  },
+  "website-analysis": {
+    "html.md": "vercel-labs/agent-skills@web-design-guidelines",
+    "css.md": "heygen-com/hyperframes@css-animations",
+    "javascript.md": "vercel-labs/agent-skills@web-design-guidelines",
+    "dom.md": "mindrally/skills@cheerio-parsing",
+    "accessibility.md": "addyosmani/web-quality-skills@accessibility",
+    "responsive-design.md": "vercel-labs/agent-skills@web-design-guidelines",
+    "seo.md": "coreyhaines31/marketingskills@seo-audit"
+  },
+  "ai-codegen": {
+    "prompt-engineering.md": "wshobson/agents@prompt-engineering-patterns",
+    "refactoring.md": "liuzhengdongfortest/codestable@cs-refactor",
+    "code-generation.md": "aj-geddes/useful-ai-prompts@code-generation-template",
+    "json-schema.md": "zaggino/z-schema@writing-json-schemas",
+    "structured-output.md": "patricio0312rev/skills@structured-output-extractor"
+  },
+  "review": {
+    "code-review.md": "obra/superpowers@requesting-code-review",
+    "accessibility.md": "addyosmani/web-quality-skills@accessibility",
+    "performance.md": "addyosmani/web-quality-skills@performance",
+    "security.md": "leonmelamud/claude-code-security-review@code-security-audit",
+    "eslint.md": "patricio0312rev/skills@eslint-prettier-config",
+    "prettier.md": "patricio0312rev/skills@eslint-prettier-config",
+    "optimization.md": "vercel-labs/agent-skills@vercel-optimize"
+  }
+}

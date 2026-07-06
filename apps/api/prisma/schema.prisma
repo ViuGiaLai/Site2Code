@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Crawl {
+  id              Int      @id @default(autoincrement())
+  url             String
+  html            String
+  screenshotPath  String?
+  title           String?
+  metaDescription String?
+  createdAt       DateTime @default(now())
+}
