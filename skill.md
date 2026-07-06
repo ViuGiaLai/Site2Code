@@ -137,3 +137,82 @@ Export ZIP
 ```
 
 Đây là nhóm skill phù hợp nhất để xây dựng một tool chuyển **URL website → project theo công nghệ người dùng chọn**.
+
+
+
+SITE2CODE/
+│
+├── apps/
+│   ├── api/                 # NestJS
+│   └── web/                 # Next.js
+│
+├── ai/
+│   ├── prompts/
+│   │   ├── analyze-layout.md
+│   │   ├── generate-code.md
+│   │   ├── review-code.md
+│   │   ├── optimize-code.md
+│   │   └── security-review.md
+│   │
+│   ├── skills/
+│   │   ├── common/
+│   │   │   ├── typescript-pro.md
+│   │   │   ├── clean-code.md
+│   │   │   ├── design-pattern.md
+│   │   │   └── software-architecture.md
+│   │   │
+│   │   ├── frontend/
+│   │   │   ├── react.md
+│   │   │   ├── nextjs.md
+│   │   │   ├── vue.md
+│   │   │   ├── nuxt.md
+│   │   │   ├── angular.md
+│   │   │   ├── svelte.md
+│   │   │   ├── tailwind.md
+│   │   │   ├── bootstrap.md
+│   │   │   ├── material-ui.md
+│   │   │   ├── shadcn.md
+│   │   │   └── chakra.md
+│   │   │
+│   │   ├── backend/
+│   │   │   ├── express.md
+│   │   │   ├── nestjs.md
+│   │   │   ├── springboot.md
+│   │   │   ├── aspnet.md
+│   │   │   ├── laravel.md
+│   │   │   ├── django.md
+│   │   │   ├── fastapi.md
+│   │   │   ├── go.md
+│   │   │   └── fiber.md
+│   │   │
+│   │   ├── database/
+│   │   │   ├── postgres.md
+│   │   │   ├── mysql.md
+│   │   │   ├── mongodb.md
+│   │   │   └── sqlite.md
+│   │   │
+│   │   ├── crawler/
+│   │   │   ├── playwright.md
+│   │   │   ├── cheerio.md
+│   │   │   └── dom-parser.md
+│   │   │
+│   │   └── review/
+│   │       ├── code-review.md
+│   │       ├── performance.md
+│   │       ├── security.md
+│   │       └── accessibility.md
+│   │
+│   └── templates/
+│       ├── nextjs/
+│       ├── react/
+│       ├── vue/
+│       ├── nestjs/
+│       ├── springboot/
+│       └── fastapi/
+│
+├── docs/
+│   ├── architecture.md
+│   ├── roadmap.md
+│   └── api.md
+│
+└── README.md

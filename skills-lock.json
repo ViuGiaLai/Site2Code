@@ -1,11 +1,29 @@
 {
   "version": 1,
   "skills": {
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "skillPath": "skills/accessibility/SKILL.md",
+      "computedHash": "ebfa09617a2ac4fd64afd73267726b787145a8d14294df3f8802b462c91594ab"
+    },
     "angular-component": {
       "source": "analogjs/angular-skills",
       "sourceType": "github",
       "skillPath": "skills/angular-component/SKILL.md",
       "computedHash": "9d2fb6fbec5a8a9fd029e125194ba749b717b1fefef1cf5cd6f7a67d5b7bc364"
+    },
+    "aspnet-minimal-api-openapi": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/aspnet-minimal-api-openapi/SKILL.md",
+      "computedHash": "2c4b990eba7b246b17c043a60b85f0910a98ce5e8aad13b92e34c260fdf23d4b"
+    },
+    "cheerio-parsing": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "cheerio-parsing/SKILL.md",
+      "computedHash": "9874124df1aabba1a58b77973e88fad27e50705486a957844ccefc837f26553f"
     },
     "clean-code": {
       "source": "sickn33/antigravity-awesome-skills",
@@ -13,11 +31,53 @@
       "skillPath": "skills/clean-code/SKILL.md",
       "computedHash": "551e1ac1c416d9df11fce8bc613c3595794f1f5e634d20c5b3e257afded11ed7"
     },
+    "code-generation-template": {
+      "source": "aj-geddes/useful-ai-prompts",
+      "sourceType": "github",
+      "skillPath": "skills/code-generation-template/SKILL.md",
+      "computedHash": "200780cc9fcaeceb2385c1abea4b708cbf9857bc869cdc364e93a12d58e8a51c"
+    },
+    "code-security-audit": {
+      "source": "leonmelamud/claude-code-security-review",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "585410491bfaf6a341bd23f8894edefbb51db19b7e4e0c7cb2f0abd0c96528fd"
+    },
+    "cs-refactor": {
+      "source": "liuzhengdongfortest/codestable",
+      "sourceType": "github",
+      "skillPath": "plugins/codestable/skills/cs-refactor/SKILL.md",
+      "computedHash": "3a18754b608ab375d78b16c1f47b40fdd1317715e261efd5e0f802646711daef"
+    },
     "design-system-patterns": {
       "source": "wshobson/agents",
       "sourceType": "github",
       "skillPath": "plugins/ui-design/skills/design-system-patterns/SKILL.md",
       "computedHash": "b6ba14bf8809ee027a3c4c9e88bdc71626eb7f68604b65dce000519d8e4ad458"
+    },
+    "django-patterns": {
+      "source": "affaan-m/everything-claude-code",
+      "sourceType": "github",
+      "skillPath": "skills/django-patterns/SKILL.md",
+      "computedHash": "0a361f02b98c81149a3e70e156e27b8c1ccd06dec4274f4cb530f45f9d8c147f"
+    },
+    "eslint-prettier-config": {
+      "source": "patricio0312rev/skills",
+      "sourceType": "github",
+      "skillPath": "foundation/eslint-prettier-config/SKILL.md",
+      "computedHash": "ee512310dea918a546572bf6ea7e8d822d201ae0cdb4bada288772ff984ddb00"
+    },
+    "fastapi-templates": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/api-scaffolding/skills/fastapi-templates/SKILL.md",
+      "computedHash": "e28ca940d4a3a85eaa9150f0d4c0cc36c16de33368963b7f9da5875842b328b4"
+    },
+    "golang-code-style": {
+      "source": "samber/cc-skills-golang",
+      "sourceType": "github",
+      "skillPath": "skills/golang-code-style/SKILL.md",
+      "computedHash": "2127c39ee9acba553fb7428c4a26fde70208061d913660c7880e1207d89fc2ca"
     },
     "improve-codebase-architecture": {
       "source": "mattpocock/skills",
@@ -30,6 +90,24 @@
       "sourceType": "github",
       "skillPath": "skills/java-springboot/SKILL.md",
       "computedHash": "f1b9c6b1277178fc33e5a612761c1cd1cf6ab5f946d05d69d52026d142c0a0c1"
+    },
+    "laravel-specialist": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/laravel-specialist/SKILL.md",
+      "computedHash": "805be17bd59f759e2f2f2dcbd6bd205ca6678420a87b21da1c16e0793093615c"
+    },
+    "mongodb-schema-design": {
+      "source": "mongodb/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mongodb-schema-design/SKILL.md",
+      "computedHash": "932249833753aab8cc9f4a5016f406eb82631be57d795fad4611b75a8de34d03"
+    },
+    "mysql": {
+      "source": "planetscale/database-skills",
+      "sourceType": "github",
+      "skillPath": "skills/mysql/SKILL.md",
+      "computedHash": "a74d7d018c4a9cfe4fd6e37f8758ef03272cde3f3dc2444c4f299636f4b3d275"
     },
     "nestjs-best-practices": {
       "source": "kadajett/agent-nestjs-skills",
@@ -61,17 +139,65 @@
       "skillPath": "skills/nuxt/SKILL.md",
       "computedHash": "3f271d53fd31dbb482e6aad3f54992955f1b5cb0afa9972c592b087316005436"
     },
+    "performance": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance/SKILL.md",
+      "computedHash": "646931a3af896ae12a3cad3d762668cb6487fe3ab179daf8fdc974fb79acfe49"
+    },
+    "playwright-best-practices": {
+      "source": "currents-dev/playwright-best-practices-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "996c8cafaa0b6bcb1a6de785a63fb4a3dfe794f17584ff82daedec9e3eaacad3"
+    },
+    "postgresql-table-design": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/database-design/skills/postgresql/SKILL.md",
+      "computedHash": "d7d040ee506a300c08a64b9ef6de9aa677b6d7251e33c3c87e0608f821a9506d"
+    },
+    "prisma-client-api": {
+      "source": "prisma/skills",
+      "sourceType": "github",
+      "skillPath": "prisma-client-api/SKILL.md",
+      "computedHash": "7825288518e0722b497de03367a1aee477fc61b0b488d456b9b6257294c005ae"
+    },
+    "prisma-database-setup": {
+      "source": "prisma/skills",
+      "sourceType": "github",
+      "skillPath": "prisma-database-setup/SKILL.md",
+      "computedHash": "0d6f44ac34b1ed3f8ed2970ecf90483d0f658fd1d204458f62bfefa28f31b095"
+    },
+    "prompt-engineering-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/llm-application-dev/skills/prompt-engineering-patterns/SKILL.md",
+      "computedHash": "7ac6e2a8672c5afab8cddd7f122523c6a3c28cf01e0b35c5b5385fc3a2bbe901"
+    },
     "requesting-code-review": {
       "source": "obra/superpowers",
       "sourceType": "github",
       "skillPath": "skills/requesting-code-review/SKILL.md",
       "computedHash": "cde520e9118d7e6b74b5ab0123cff2f68d9c07bddb3f82c997753b6126600aed"
     },
+    "seo-audit": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/seo-audit/SKILL.md",
+      "computedHash": "606da61224d9d5687020816292c88152a7fcb27ce375b22f92f429e074f07f34"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "4f78ff7cd3a4f637b6fe30dbbab4a80a19dd63fa62d9352bed461ccfdbcbbf43"
+    },
+    "structured-output-extractor": {
+      "source": "patricio0312rev/skills",
+      "sourceType": "github",
+      "skillPath": "ai-engineering/structured-output-extractor/SKILL.md",
+      "computedHash": "069e2df47256f9a178934b0b7352406c6c797580f53d54b2536add785e6cd1bf"
     },
     "svelte-code-writer": {
       "source": "sveltejs/ai-tools",
@@ -91,6 +217,12 @@
       "skillPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
       "computedHash": "992ab1e874c4f4159aa18d4ff45d1c3f86f322f0bd2a6744cc32f7d6147f9f06"
     },
+    "typeorm": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "typeorm/SKILL.md",
+      "computedHash": "a4a4be3b9466db2c0729ec3e011647d6c791ed87ac35437fb699cd1b65b02e38"
+    },
     "typescript-advanced-types": {
       "source": "wshobson/agents",
       "sourceType": "github",
@@ -102,6 +234,12 @@
       "sourceType": "github",
       "skillPath": "skills/typescript-pro/SKILL.md",
       "computedHash": "c6fb76eac620470f63ad24e3b35760f12624072f75d5b43b4f00bb9961f08bec"
+    },
+    "vercel-optimize": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-optimize/SKILL.md",
+      "computedHash": "fb87d3a135fef30748f772200a9f161f780b5a16830e8e70a3a126195cb16963"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
@@ -115,11 +253,29 @@
       "skillPath": "skills/vue/SKILL.md",
       "computedHash": "f72b54618560c53d65740515ded5bb833750c4574dbe961fd21f022bd2b31a74"
     },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
+    },
+    "web-scraping": {
+      "source": "jamditis/claude-skills-journalism",
+      "sourceType": "github",
+      "skillPath": "dev-toolkit/skills/web-scraping/SKILL.md",
+      "computedHash": "be6023b8a3f3b175f118502c2e34176865b33c0f24c01015a20f2aedd573cc37"
+    },
     "webapp-testing": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/webapp-testing/SKILL.md",
       "computedHash": "3f14af7f5690695209c22fbf8c8d133769a86d64892602c09bb13f135e14e857"
+    },
+    "writing-json-schemas": {
+      "source": "zaggino/z-schema",
+      "sourceType": "github",
+      "skillPath": "skills/writing-json-schemas/SKILL.md",
+      "computedHash": "9b3b90c7d96bc9ef8c643dd464b2097d2a22f87ffc7f6c85a2973f5de2636409"
     }
   }
 }

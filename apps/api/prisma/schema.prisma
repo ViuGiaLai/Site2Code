@@ -15,3 +15,21 @@ model Crawl {
   metaDescription String?
   createdAt       DateTime @default(now())
 }
+
+model Job {
+  id          String   @id @default(uuid())
+  status      String   @default("pending")
+  progress    Int      @default(0)
+  url         String
+  frontend    String
+  css         String
+  backend     String?
+  database    String?
+  layout      String?
+  files       String?
+  report      String?
+  zipPath     String?
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
